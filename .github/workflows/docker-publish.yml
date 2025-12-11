@@ -1,0 +1,17 @@
+name: Push Docker image to DockerHub
+on:
+  [workflow_dispatch]
+  
+jobs:
+  publish_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: build
+        run: |
+          docker build . -t luxorjd/docker-image-pcloud:latest
+      - name: publish
+        run: |
+          docker login -u luxorjd -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push luxorjd/docker-image-pcloud:latest
